@@ -13,6 +13,7 @@
 ## Demonstration
 
 ![](asciicast.svg)
+https://asciinema.org/a/458508
 
 ## How it works
 
