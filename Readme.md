@@ -29,8 +29,8 @@ https://asciinema.org/a/458508
 
 ## See also
 
-[EdgeRouter - Manual TFTP Recovery](https://help.ui.com/hc/en-us/articles/360018189493)
-[EdgeRouter - How to Update the Bootloader](https://help.ui.com/hc/en-us/articles/360009932554-EdgeRouter-How-to-Update-the-Bootloader)
+- [EdgeRouter - Manual TFTP Recovery](https://help.ui.com/hc/en-us/articles/360018189493)
+- [EdgeRouter - How to Update the Bootloader](https://help.ui.com/hc/en-us/articles/360009932554-EdgeRouter-How-to-Update-the-Bootloader)
 
 ## License
 
