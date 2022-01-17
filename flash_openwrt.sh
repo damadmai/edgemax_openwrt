@@ -1,8 +1,8 @@
 #!/bin/bash
 
 IP=192.168.1.1
-IP_WRT=192.168.1.1
 HOST=ubnt@${IP}
+DEBUG=0
 
 UBNT_FW_SUM=71e36defd8a00ba61031bffd51f3fbb35685394312ca2ba6f5bc0dd7807a0d22
 UBNT_FW_URL=https://dl.ui.com/firmwares/edgemax/v2.0.x/
@@ -23,6 +23,27 @@ SCP_OPTS="-o StrictHostKeyChecking=no \
         -o LogLevel=error \
         -oMacs=hmac-sha1"
 
+
+log()
+{
+    if [ "${DEBUG}" == "1" ] ;
+    then
+        echo "${BASH_LINENO[1]} (${BASH_LINENO[0]}): $@"
+    else
+        echo "$@"
+    fi
+}
+
+checkbin()
+{
+    log "Check for '${1}'..."
+    if ! command -v ${1} &> /dev/null
+    then
+        log "Binary '${1}' could not be found"
+        exit
+    fi
+}
+
 iscp()
 {
     scp ${SCP_OPTS} ${@}
@@ -30,7 +51,7 @@ iscp()
 
 uiscp()
 {
-    sshpass -p ubnt scp ${SCP_OPTS} ${@}
+    sshpass -p 'ubnt' scp ${SCP_OPTS} ${@}
 }
 
 SSH_OPTS="-oMacs=hmac-sha1 \
@@ -39,7 +60,8 @@ SSH_OPTS="-oMacs=hmac-sha1 \
        -o PubkeyAuthentication=no \
        -o LogLevel=error \
        -o ServerAliveInterval=3 \
-       -o ServerAliveCountMax=3"
+       -o ServerAliveCountMax=3 \
+       -o ConnectTimeout=20"
 
 issh()
 {
@@ -48,7 +70,7 @@ issh()
 
 uissh()
 {
-    sshpass -p ubnt ssh ${SSH_OPTS} ${@}
+    sshpass -p 'ubnt' ssh ${SSH_OPTS} ${@}
 }
 
 wping()
@@ -59,30 +81,39 @@ wping()
 
 twait()
 {
-    for i in $(eval echo "{1..${1}}"); do echo -n . && sleep 1; done
+    for i in $(eval echo "{1..${1}}"); do
+    	echo -n "." && sleep 1;
+    done
     echo ""
 }
 
 waitboot()
 {
-    echo "Waiting for ping reply from ${IP}"
+    log "Waiting for ping reply from ${IP}"
     wping ${IP}
     DELAY=15
-    echo "Got reply, waiting ${DELAY} seconds for SSH availability"
+    log "Got reply, waiting ${DELAY} seconds for SSH availability"
     twait ${DELAY}
 }
 
 rebootwait()
 {
-    echo "Reboot device"
+    log "Reboot device"
     uissh ${HOST} "sudo reboot"
-    echo Waiting for reboot
+    log "Waiting for reboot"
     if [[ "${1}" == "20" ]]; then
-        echo Please disconnect from eth0 and connect to eth1
+        log "Please disconnect from eth0 and connect to eth1"
+        
     fi
     twait ${1}
     waitboot
 }
+
+checkbin "wget"
+checkbin "sshpass"
+checkbin "scp"
+checkbin "sha256sum"
+checkbin "ping"
 
 wget -nc ${UBNT_FW_URL}${UBNT_FW}
 echo "${UBNT_FW_SUM} ${UBNT_FW}" | sha256sum -c - || exit 0
@@ -95,37 +126,37 @@ echo "${WRT_BIN_SUM} ${WRT_BIN}" | sha256sum -c - || exit 0
 
 echo ""
 waitboot
-echo "Delete additional firmware image"
+log "Delete additional firmware image"
 uissh ${HOST} "echo Yes | ${RUN} delete system image"
-echo "Copy firmware ${UBNT_FW} to device RAM"
+log "Copy firmware ${UBNT_FW} to device RAM"
 uiscp ${UBNT_FW} ${HOST}:/tmp
-echo "Write firmware to flash"
+log "Write firmware to flash"
 uissh ${HOST} ${RUN} add system image /tmp/${UBNT_FW}
 rebootwait 10
-echo "Checking Bootloader"
+log "Checking Bootloader"
 OUT=$(uissh ${HOST} ${RUN} show system boot-image)
-echo "${OUT}"
+log "${OUT}"
 if [[ "$OUT" == *"to upgrade"* ]]; then
-    echo "Upgrading Bootloader"
+    log "Upgrading Bootloader"
     uissh ${HOST} "echo Yes | ${RUN} add system boot-image"
     rebootwait 10
 fi
 
-echo "Delete old firmware image"
+log "Delete old firmware image"
 uissh ${HOST} "echo Yes | ${RUN} delete system image"
-echo "Copy firmware ${WRT_TAR} to device RAM"
+log "Copy firmware ${WRT_TAR} to device RAM"
 uiscp ${WRT_TAR} ${HOST}:/tmp
-echo "Write firmware to flash"
+log "Write firmware to flash"
 uissh ${HOST} ${RUN} add system image /tmp/${WRT_TAR}
 rebootwait 20
 
 HOST=root@${IP}
-echo "Copy firmware ${WRT_BIN} to device RAM"
+log "Copy firmware ${WRT_BIN} to device RAM"
 iscp ${WRT_BIN} ${HOST}:/tmp/
-echo "Write firmware to flash"
+log "Write firmware to flash"
 issh ${HOST} sysupgrade --force -n /tmp/${WRT_BIN}
-echo "Waiting for reboot"
+log "Waiting for reboot"
 twait 15
 waitboot
 issh ${HOST} cat /etc/banner
-echo "Finished"
+log "Finished"
