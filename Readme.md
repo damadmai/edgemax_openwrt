@@ -4,7 +4,7 @@
 
 - Connect to eth0 of EdgeRouter X SFP with default configuration
 - Set ethernet IP of your PC to 192.168.1.5/24
-- Ensure that no other device in your network has IP 192.168.1.20 or 192.168.1.1
+- Ensure that no other device in your network has IP 192.168.1.1
 - execute [./flash_openwrt.sh](./flash_openwrt.sh)
 - wait
 - Connect to eth1 of EdgeRouter when instructed to do
