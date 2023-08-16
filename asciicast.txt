@@ -1,0 +1,85 @@
+Check for 'wget'...
+Check for 'sshpass'...
+Check for 'scp'...
+Check for 'sha256sum'...
+Check for 'ping'...
+File ‘ER-e50.v2.0.9-hotfix.3.5506084.tar’ already there; not retrieving.
+
+ER-e50.v2.0.9-hotfix.3.5506084.tar: OK
+
+Waiting for ping reply from 192.168.1.1
+
+Got reply, waiting 15 seconds for SSH availability
+...............
+Delete additional firmware image
+The system currently has the following image(s) installed:
+
+v1.10.7.5127989.181001.1227    (running image) (default boot)
+
+There is no image to delete.
+Copy firmware ER-e50.v2.0.9-hotfix.3.5506084.tar to device RAM
+Write firmware to flash
+Checking upgrade image...Done
+Preparing to upgrade...Done
+Copying upgrade image...Done
+Removing old image...Done
+Checking upgrade image...Done
+Copying config data...Done
+Finishing upgrade...Done
+Upgrade completed
+Reboot device
+Waiting for reboot
+..........
+Waiting for ping reply from 192.168.1.1
+..............................
+Got reply, waiting 15 seconds for SSH availability
+...............
+Checking Bootloader
+The system currently has the following boot image installed:
+Current boot version: e51_001_1e49c
+Current boot md5sum : e2a286b6ff09ce6d14f631dafaff6027
+
+New uboot version is available: boot_e51_002_4c817.tar.gz
+New boot md5sum : b0cd877cb12c295d6ecea3eaf292b333
+Run "add system boot-image" to upgrade boot image.
+Upgrading Bootloader
+Uboot version [e51_001_1e49c] is about to be replaced
+Warning: Don't turn off the power or reboot during the upgrade!
+Are you sure you want to replace old version? (Yes/No) [Yes]: Preparing to upgrade...Done
+Copying upgrade boot image...Done
+Checking boot version: Current is e51_001_1e49c; new is e51_002_4c817 ...Done
+Checking upgrade image...Done
+Writing image...Boot image has been upgraded.
+Reboot is needed in order to apply changes!
+Done
+Upgrade boot completed
+Reboot device
+Connection to 192.168.1.1 closed by remote host.
+Waiting for reboot
+..........
+Waiting for ping reply from 192.168.1.1
+.........................
+Got reply, waiting 15 seconds for SSH availability
+...............
+Delete old firmware image
+The system currently has the following image(s) installed:
+
+v2.0.9-hotfix.3.5506084.220506.0821 (running image) (default boot)
+v1.10.7.5127989.181001.1227
+
+You are about to delete image [v1.10.7.5127989.181001.1227]
+Are you sure you want to delete ? (Yes/No) [Yes]: Removing old image... Done
+Waiting for reboot
+Reboot device
+Connection to 192.168.1.1 closed by remote host.
+Waiting for reboot
+....................
+Waiting for ping reply from 192.168.1.1
+....................
+Got reply, waiting 15 seconds for SSH availability
+...............
+The system currently has the following image(s) installed:
+
+v2.0.9-hotfix.3.5506084.220506.0821 (running image) (default boot)
+
+Finished
