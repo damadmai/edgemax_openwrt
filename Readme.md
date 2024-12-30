@@ -26,7 +26,7 @@ https://asciinema.org/a/458508
 - Checks bootloader version and upgrades to boodloader that enables TFTP recovery in case something goes wrong
   - boot version: e51_003_9a910
   - boot md5sum : 91ac6bc5084f78bc3f8cabd859460c0f
-- Installs OpenWrt initramfs factory image and then sysupgrade to current verion
+- Installs OpenWrt initramfs factory image and then sysupgrade to current version
 - Shows if it worked
 
 ## See also

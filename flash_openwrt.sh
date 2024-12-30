@@ -8,13 +8,13 @@ UBNT_FW_SUM=71e36defd8a00ba61031bffd51f3fbb35685394312ca2ba6f5bc0dd7807a0d22
 UBNT_FW_URL=https://dl.ui.com/firmwares/edgemax/v2.0.x/
 UBNT_FW=ER-e50.v2.0.6.5208541.tar
 
-WRT_TAR_SUM=cb6e043a6175393e4658b0031e7efe0fb4dcedf8b2df6a3bdaa7732d35fe7c08
-WRT_TAR_URL=http://openwrt.jaru.eu.org/openwrt-18.06/targets/ramips/mt7621/
-WRT_TAR=openwrt-18.06-snapshot-r7911-f65330d27d-ramips-mt7621-ubnt-erx-sfp-initramfs-factory.tar
+WRT_TAR_SUM=8f6f370dd7a8bc3e702fba607f175ac5b892a6d8cc852faa94fa73b0f8eccb42
+WRT_TAR_URL=https://github.com/stman/OpenWRT-19.07.2-factory-tar-file-for-Ubiquiti-EdgeRouter-x/raw/master/Version%2022.03/
+WRT_TAR=openwrt-ramips-mt7621-ubnt_edgerouter-x-initramfs-factory.tar
 
-WRT_BIN_SUM=30e606fdcdd7cf271446c4c98848355a3705dfa94372caca6e362b5e9329e522
-WRT_BIN_URL=https://downloads.openwrt.org/releases/21.02.1/targets/ramips/mt7621/
-WRT_BIN=openwrt-21.02.1-ramips-mt7621-ubnt_edgerouter-x-sfp-squashfs-sysupgrade.bin
+WRT_BIN_SUM=aa61e7dcf1e0f51b38d2dc76a3bf5c62e699e00e5cc02152642e40fd8a3d280f
+WRT_BIN_URL=https://downloads.openwrt.org/releases/23.05.2/targets/ramips/mt7621/
+WRT_BIN=openwrt-23.05.2-ramips-mt7621-ubnt_edgerouter-x-squashfs-sysupgrade.bin
 
 RUN=/opt/vyatta/bin/vyatta-op-cmd-wrapper
 
