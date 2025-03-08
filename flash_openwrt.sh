@@ -12,9 +12,13 @@ WRT_TAR_SUM=8f6f370dd7a8bc3e702fba607f175ac5b892a6d8cc852faa94fa73b0f8eccb42
 WRT_TAR_URL=https://github.com/stman/OpenWRT-19.07.2-factory-tar-file-for-Ubiquiti-EdgeRouter-x/raw/master/Version%2022.03/
 WRT_TAR=openwrt-ramips-mt7621-ubnt_edgerouter-x-initramfs-factory.tar
 
-WRT_BIN_SUM=aa61e7dcf1e0f51b38d2dc76a3bf5c62e699e00e5cc02152642e40fd8a3d280f
-WRT_BIN_URL=https://downloads.openwrt.org/releases/23.05.2/targets/ramips/mt7621/
-WRT_BIN=openwrt-23.05.2-ramips-mt7621-ubnt_edgerouter-x-squashfs-sysupgrade.bin
+WRT_V21_SUM=30e606fdcdd7cf271446c4c98848355a3705dfa94372caca6e362b5e9329e522
+WRT_V21_URL=https://downloads.openwrt.org/releases/21.02.1/targets/ramips/mt7621/
+WRT_V21=openwrt-21.02.1-ramips-mt7621-ubnt_edgerouter-x-sfp-squashfs-sysupgrade.bin
+
+WRT_V23_SUM=daf6816666dbcbe0e5be19a9ff32db2111d84370fdfb1c0106578866cfb2e69a
+WRT_V23_URL=https://downloads.openwrt.org/releases/23.05.5/targets/ramips/mt7621/
+WRT_V23=openwrt-23.05.5-ramips-mt7621-ubnt_edgerouter-x-sfp-squashfs-sysupgrade.bin
 
 RUN=/opt/vyatta/bin/vyatta-op-cmd-wrapper
 
@@ -103,7 +107,7 @@ rebootwait()
     log "Waiting for reboot"
     if [[ "${1}" == "20" ]]; then
         log "Please disconnect from eth0 and connect to eth1"
-        
+
     fi
     twait ${1}
     waitboot
@@ -121,8 +125,11 @@ echo "${UBNT_FW_SUM} ${UBNT_FW}" | sha256sum -c - || exit 0
 wget -nc ${WRT_TAR_URL}${WRT_TAR}
 echo "${WRT_TAR_SUM} ${WRT_TAR}" | sha256sum -c - || exit 0
 
-wget -nc ${WRT_BIN_URL}${WRT_BIN}
-echo "${WRT_BIN_SUM} ${WRT_BIN}" | sha256sum -c - || exit 0
+wget -nc ${WRT_V21_URL}${WRT_V21}
+echo "${WRT_V21_SUM} ${WRT_V21}" | sha256sum -c - || exit 0
+
+wget -nc ${WRT_V23_URL}${WRT_V23}
+echo "${WRT_V23_SUM} ${WRT_V23}" | sha256sum -c - || exit 0
 
 echo ""
 waitboot
@@ -151,12 +158,22 @@ uissh ${HOST} ${RUN} add system image /tmp/${WRT_TAR}
 rebootwait 20
 
 HOST=root@${IP}
-log "Copy firmware ${WRT_BIN} to device RAM"
-iscp ${WRT_BIN} ${HOST}:/tmp/
+log "Copy V21 firmware ${WRT_V21} to device RAM"
+iscp ${WRT_V21} ${HOST}:/tmp/
 log "Write firmware to flash"
-issh ${HOST} sysupgrade --force -n /tmp/${WRT_BIN}
+issh ${HOST} sysupgrade --force -n /tmp/${WRT_V21}
 log "Waiting for reboot"
-twait 15
+twait 25
 waitboot
+
+HOST=root@${IP}
+log "Copy firmware ${WRT_V23} to device RAM"
+iscp ${WRT_V23} ${HOST}:/tmp/
+log "Write firmware to flash"
+issh ${HOST} sysupgrade --force -n /tmp/${WRT_V23}
+log "Waiting for reboot"
+twait 25
+waitboot
+
 issh ${HOST} cat /etc/banner
 log "Finished"
