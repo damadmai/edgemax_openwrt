@@ -18,7 +18,7 @@ WRT_BIN=openwrt-23.05.2-ramips-mt7621-ubnt_edgerouter-x-squashfs-sysupgrade.bin
 
 RUN=/opt/vyatta/bin/vyatta-op-cmd-wrapper
 
-SCP_OPTS="-o StrictHostKeyChecking=no \
+SCP_OPTS="-O -o StrictHostKeyChecking=no \
         -o UserKnownHostsFile=/dev/null \
         -o LogLevel=error \
         -oMacs=hmac-sha1"
